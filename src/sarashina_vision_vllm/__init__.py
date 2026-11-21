@@ -1,6 +1,7 @@
 def register() -> None:
     from transformers import AutoConfig
     from vllm import ModelRegistry
+    from vllm.renderers.registry import RENDERER_REGISTRY
     from vllm.tokenizers import TokenizerRegistry
 
     from .configuration import SarashinaVisionConfig
@@ -14,3 +15,4 @@ def register() -> None:
         TokenizerRegistry.register(
             "sarashina", "sarashina_vision_vllm.tokenizer", "SarashinaTokenizer"
         )
+        RENDERER_REGISTRY.register("sarashina", "vllm.renderers.hf", "HfRenderer")
