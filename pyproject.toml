@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sarashina-vision-vllm"
+version = "0.1.0"
+description = "An out-of-tree vLLM model plugin for Sarashina Vision"
+authors = [{ name = "Eito Yoneyama" }]
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+dependencies = ["vllm>=0.21.0,<0.29"]
+
+[project.urls]
+Repository = "https://github.com/rice8y/sarashina-vision-vllm"
+Issues = "https://github.com/rice8y/sarashina-vision-vllm/issues"
+
+[project.entry-points."vllm.general_plugins"]
+sarashina_vision_vllm = "sarashina_vision_vllm:register"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+sarashina_vision_vllm = ["legacy_content.jinja"]
