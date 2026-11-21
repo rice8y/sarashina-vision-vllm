@@ -1,0 +1,11 @@
+{%- set normalized = namespace(messages=[]) -%}
+{%- for message in messages -%}
+    {%- if message.content is string -%}
+        {%- set content = message.content -%}
+    {%- else -%}
+        {# The legacy checkpoint template already inserts one image slot. #}
+        {%- set content = message.content | selectattr('type', 'equalto', 'text') | map(attribute='text') | join -%}
+    {%- endif -%}
+    {%- set normalized.messages = normalized.messages + [{'role': message.role, 'content': content}] -%}
+{%- endfor -%}
+{%- set messages = normalized.messages -%}
