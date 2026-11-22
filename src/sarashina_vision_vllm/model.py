@@ -16,6 +16,7 @@ from vllm.model_executor.models.utils import (
     maybe_prefix,
 )
 from vllm.multimodal import MULTIMODAL_REGISTRY
+from vllm.sequence import IntermediateTensors
 
 from .processing import (
     IMAGE_TOKEN,
@@ -78,10 +79,16 @@ class Sarashina2VisionForCausalLM(nn.Module, SupportsMultiModal):
         self,
         input_ids: torch.Tensor | None,
         positions: torch.Tensor,
+        intermediate_tensors: IntermediateTensors | None = None,
         inputs_embeds: torch.Tensor | None = None,
         **kwargs: object,
-    ) -> torch.Tensor:
-        return self.llm.model(input_ids, positions, inputs_embeds=inputs_embeds)
+    ) -> torch.Tensor | IntermediateTensors:
+        return self.llm(
+            input_ids=input_ids,
+            positions=positions,
+            intermediate_tensors=intermediate_tensors,
+            inputs_embeds=inputs_embeds,
+        )
 
     def compute_logits(self, hidden_states: torch.Tensor) -> torch.Tensor | None:
         return self.llm.compute_logits(hidden_states)
